@@ -1,4 +1,16 @@
 import axios from 'axios'
+import Noty from 'noty';
+
+
+function notification(message){
+  new Noty({
+    type : "alert",
+    layout: 'topRight',
+    timeout : 1500,
+    text: message
+  }).show();
+}
+
 
 
 
@@ -6,7 +18,8 @@ export const GET_POSTS = 'GET POSTS'
 export const GET_POSTS_SUCCESS = 'GET_POSTS_SUCCESS'
 export const GET_POSTS_FAILURE = 'GET_POSTS_FAILURE'
 export const DELETE_POSTS = 'DELETE_POSTS'
-const UPDATE_POSTS = 'UPDATE_POSTS'
+export const UPDATE_POSTS = 'UPDATE_POSTS'
+export const ADD_POSTS = "ADD_POSTS"
 
 
 
@@ -18,7 +31,9 @@ export const getPostsFailure = () => ({ type: GET_POSTS_FAILURE })
 
 export const deletePost = (index) =>({type:DELETE_POSTS, payload : index})
 
-const updatePost = (index) => ({ type: UPDATE_POSTS , payload: index})
+export const updatePost = (exercise) => ({ type: UPDATE_POSTS , payload: exercise})
+
+export const addPost = (newExercise) =>({type : ADD_POSTS , payload : newExercise})
 
 
 export function fetchallPosts() {
@@ -27,6 +42,7 @@ export function fetchallPosts() {
     try {
       const res = await axios.get('http://localhost:5000/exercises')
       const data = await res.data
+      console.log(data)
       dispatch(getPostsSuccess(data))
     } catch (error) {
       dispatch(getPostsFailure())
@@ -40,10 +56,10 @@ export function deleteExercise(id){
     dispatch(deletePost(id))
     try{
     await axios.delete('http://localhost:5000/exercises/'+id)
-        .then(response => alert(response.data))
+        .then(response => notification(response.data))
       }
       catch(error){
-        alert(error)
+        notification(error)
       }
   }
 }
@@ -54,12 +70,27 @@ export function updateExercise(index , exercise){
     dispatch(updatePost(exercise))
     try{
       await axios.post('http://localhost:5000/exercises/update/'+ index, exercise)
-      .then( response => alert(response.data))
+      .then( response => notification(response.data))
     }
     catch(error){
-      alert(error)
+      notification(error)
     }
 
   }
 
 } 
+
+export default function addExercise(exercise){
+  return async dispatch =>{
+    dispatch(addPost(exercise))
+    try{
+      await axios.post('http://localhost:5000/exercises/add/', exercise)
+      .then(res=> notification(res.data))
+    }
+    catch(error){
+      notification(error)
+    }
+
+  }
+
+}

@@ -2,6 +2,8 @@ import React,{Component} from 'react'
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css"
 import axios from 'axios'
+import {connect} from 'react-redux'
+import addExercise from '../store/action/actions';
 /*css*/
 import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import { makeStyles } from '@material-ui/core/styles';
@@ -14,7 +16,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 
 
-export default class CreateExercise extends Component{
+
+class CreateExercise extends Component{
     constructor(props){
         super(props);
 
@@ -76,8 +79,8 @@ export default class CreateExercise extends Component{
             duration : this.state.duration,
             date : this.state.date
         }
-        await axios.post('http://localhost:5000/exercises/add',exercise)
-         .then(res=> alert(res.data))
+        const {add_exercise} = this.props
+        await add_exercise(exercise)
         this.setState({
             username : "",
             description : "",
@@ -85,9 +88,7 @@ export default class CreateExercise extends Component{
             date : ""
             
         })
-        window.location = "/"
 
-        
     }
     
     render(){
@@ -155,3 +156,12 @@ export default class CreateExercise extends Component{
     }
 
 }
+
+
+const mapDispatchToProp = (dispatch) =>{
+    return({
+        add_exercise : (exercise) => dispatch(addExercise(exercise))
+    })
+}
+
+export default connect(null,mapDispatchToProp)(CreateExercise)

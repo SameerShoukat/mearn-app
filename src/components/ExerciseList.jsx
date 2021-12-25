@@ -31,7 +31,6 @@ const Exercise = (props) =>{
 
    async componentDidMount(){
        const {exercise_list} = this.props
-       await exercise_list()
     /* await axios.get('http://localhost:5000/exercises/')
       .then(response => {
           this.setState({ 
