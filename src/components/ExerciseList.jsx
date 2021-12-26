@@ -30,7 +30,7 @@ const Exercise = (props) =>{
     }
 
    async componentDidMount(){
-       const {exercise_list} = this.props
+      this.props.dispatch(fetchallPosts())
     /* await axios.get('http://localhost:5000/exercises/')
       .then(response => {
           this.setState({ 
@@ -43,8 +43,7 @@ const Exercise = (props) =>{
     }
 
     async deleteExercise(id){
-      const {delete_exercise} = this.props
-      await delete_exercise(id)
+      this.props.dispatch(deleteExercise(id))
 
     }
 
@@ -94,12 +93,12 @@ const Exercise = (props) =>{
 
     })
 
-    const mapDispatchToProp = (dispatch) => {
-      return({
-      exercise_list : () => {dispatch(fetchallPosts())},
-      delete_exercise : (id)=> {dispatch(deleteExercise(id))}
-      })
-    }
+    // const mapDispatchToProp = (dispatch) => {
+    //   return({
+    //   exercise_list : () => {dispatch(fetchallPosts())},
+    //   delete_exercise : (id)=> {dispatch(deleteExercise(id))}
+    //   })
+    // }
 
 
-    export default connect(mapStateToProps, mapDispatchToProp)(ExerciseList);
+    export default connect(mapStateToProps, null)(ExerciseList);

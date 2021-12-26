@@ -11,6 +11,7 @@ export default function exerciseReducer ( state = initialState, action){
         case actions.GET_POSTS:
           return { ...state, loading: true }
         case actions.GET_POSTS_SUCCESS:
+        console.log(action.payload)
           return { exercise: action.payload, loading: false, hasErrors: false }
         case actions.GET_POSTS_FAILURE:
           return { ...state, loading: false, hasErrors: true }
